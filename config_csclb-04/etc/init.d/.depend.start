@@ -1,0 +1,18 @@
+TARGETS = rsyslog killprocs motd bootlogs dnsmasq atd dbus acpid single ntp anacron ssh apache2 exim4 avahi-daemon lightdm wicd cron rc.local rmnologin
+INTERACTIVE = apache2
+dnsmasq: rsyslog
+atd: rsyslog
+dbus: rsyslog
+acpid: rsyslog
+single: killprocs motd bootlogs
+ntp: rsyslog
+anacron: rsyslog
+ssh: rsyslog
+apache2: rsyslog dnsmasq
+exim4: rsyslog dnsmasq
+avahi-daemon: dbus rsyslog
+lightdm: acpid dbus
+wicd: dbus
+cron: rsyslog dnsmasq
+rc.local: dnsmasq rsyslog atd exim4 apache2 avahi-daemon dbus lightdm acpid wicd motd bootlogs ntp anacron cron ssh
+rmnologin: dnsmasq rsyslog atd exim4 apache2 avahi-daemon dbus lightdm acpid wicd motd bootlogs ntp anacron cron ssh

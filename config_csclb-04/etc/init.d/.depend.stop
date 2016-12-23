@@ -1,0 +1,13 @@
+TARGETS = atd apache2 exim4 avahi-daemon lightdm wicd urandom alsa-utils dnsmasq sendsigs rsyslog umountnfs.sh rpcbind nfs-common hwclock.sh networking umountfs umountroot halt reboot
+dnsmasq: exim4 apache2
+sendsigs: dnsmasq atd alsa-utils exim4 apache2 avahi-daemon lightdm wicd
+rsyslog: dnsmasq atd sendsigs exim4 apache2 avahi-daemon
+umountnfs.sh: dnsmasq atd sendsigs alsa-utils rsyslog exim4 apache2 avahi-daemon lightdm wicd
+rpcbind: umountnfs.sh
+nfs-common: umountnfs.sh
+hwclock.sh: atd rsyslog nfs-common
+networking: dnsmasq rpcbind exim4 apache2 umountnfs.sh
+umountfs: dnsmasq rpcbind networking atd alsa-utils exim4 apache2 avahi-daemon umountnfs.sh urandom hwclock.sh lightdm wicd
+umountroot: umountfs
+halt: umountroot
+reboot: umountroot
